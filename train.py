@@ -40,31 +40,31 @@ import imp
 import algorithms as alg
 from dataloader import MiniImageNet, FewShotDataloader
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()   *模块：命令行选项、参数和子命令解析器；第一步，创建一个ArgumentParser对象
 parser.add_argument('--config', type=str, required=True, default='',
     help='config file with parameters of the experiment. It is assumed that the'
-         ' config file is placed on the directory ./config/.')
+         ' config file is placed on the directory ./config/.')   *第二步，添加参数；带有实验参数的配置文件
 parser.add_argument('--checkpoint', type=int, default=0,
     help='checkpoint (epoch id) that will be loaded. If a negative value is '
-         'given then the latest existing checkpoint is loaded.')
+         'given then the latest existing checkpoint is loaded.')*检查点
 parser.add_argument('--num_workers', type=int, default=4,
-    help='number of data loading workers')
-parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
+    help='number of data loading workers')*数据加载数
+parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')*启用cuda
 parser.add_argument('--disp_step', type=int, default=200,
-    help='display step during training')
-args_opt = parser.parse_args()
+    help='display step during training')*训练期间显示step
+args_opt = parser.parse_args()*解析参数
 
-exp_config_file = os.path.join('.','config', args_opt.config + '.py')
-exp_directory = os.path.join('.','experiments', args_opt.config)
+exp_config_file = os.path.join('.','config', args_opt.config + '.py')*路径拼接，实验配置文件
+exp_directory = os.path.join('.','experiments', args_opt.config)*实验目录
 
-# Load the configuration params of the experiment
+# Load the configuration params of the experiment加载实验的配置参数
 print('Launching experiment: %s' % exp_config_file)
-config = imp.load_source("",exp_config_file).config
+config = imp.load_source("",exp_config_file).config*把源文件导入到config模块中
 config['exp_dir'] = exp_directory # the place where logs, models, and other stuff will be stored
 print("Loading experiment %s from file: %s" % (args_opt.config, exp_config_file))
-print("Generated logs, snapshots, and model files will be stored on %s" % (config['exp_dir']))
+print("Generated logs, snapshots, and model files will be stored on %s" % (config['exp_dir']))*生成的日志、快照和模型文件将存储在
 
-# Set train and test datasets and the corresponding data loaders
+# Set train and test datasets and the corresponding data loaders设置训练和测试数据集以及相应的数据加载程序
 data_train_opt = config['data_train_opt']
 data_test_opt = config['data_test_opt']
 
